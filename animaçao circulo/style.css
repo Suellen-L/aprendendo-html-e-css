@@ -1,0 +1,47 @@
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: #000000;
+    overflow: hidden;
+}
+
+.container{
+    position: absolute;
+    top: 20%;
+    height: 90%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.circle{
+    position: absolute;
+    background: tranparent;
+    width: calc(var(--i)*2.5vmin);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    border: 3px solid rgb(79, 249, 87);
+    transform-style: preserve-3d;
+    transform: rotatex(70deg) translateZ(50px);
+    animation: animation 3s ease-in-out calc(var(--i)*0.08s) infinite;
+}
+
+@keyframes animation{
+    0%,100%{
+        transform: rotatex(70deg) translateZ(50px) translateY(0);
+        filter: hue-rotate(0deg);
+    }
+    50%{
+        transform: rotatex(70deg) translateZ(50px) translateY(-50vmin);
+        filter: hue-rotate(360deg);
+    }
+}
