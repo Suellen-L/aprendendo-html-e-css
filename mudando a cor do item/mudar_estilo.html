@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Troca de Tênis</title>
+  <style>
+    .image-container {
+      width: 650px;
+      height: 400px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 1;
+      background: linear-gradient(135deg, #77841325, #478912);
+      box-shadow: 15px 25px 30px #ededed;
+      border-radius: 12px;
+      transition: transform 0.3s;
+      padding: 20px;
+    }
+
+    .shoe-image {
+      width: 300px;
+      height: auto;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+
+    .product-icons {
+      display: flex;
+      gap: 15px;
+    }
+
+    .icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 8px;
+      overflow: hidden;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: border 0.3s;
+    }
+
+    .icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .icon.active {
+      border: 2px solid #fff;
+    }
+  </style>
+</head>
+<body>
+
+<div class="image-container">
+    <img src="vestido5.jpg" alt="Shoe" class="shoe-image" id="mainShoe">
+
+  <div class="product-icons">
+    <div class="icon active" data-shoe="1"><img src="vestido5.jpg"></div>
+    <div class="icon" data-shoe="2"><img src="vestido2.jpg"></div>
+    <div class="icon" data-shoe="3"><img src="vestido6.jpg"></div>
+    <div class="icon" data-shoe="4"><img src="vestido4.jpg"></div>
+  </div>
+</div>
+
+<script>
+    const mainShoe = document.getElementById('mainShoe');
+    const icons = document.querySelectorAll('.icon');
+  
+    icons.forEach(icon => {
+      icon.addEventListener('click', () => {
+        mainShoe.src = icon.querySelector('img').src;
+
+        icons.forEach(i => i.classList.remove('active'));
+        icon.classList.add('active');
+      });
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Tea</title>
+  <style>
+    article {
+      display: grid;
+      place-items: center;
+      height: 100vh;
+      perspective: 1000px;
+      transform-style: preserve-3d;
+    }
+
+    div {
+      background-color: #ddd;
+      border-radius: 2rem;
+      box-shadow: inset 10px 10px 10px #999, inset -10px 10px 10px #fff;
+      width: 280px;
+      aspect-ratio: 1;
+      transition: transform 1s;
+      position: relative;
+    }
+
+    img {
+      position: absolute;
+      width: 8%;
+      transform: translate(-50%, -50%);
+      transition: transform 1s;
+      top: 50%;
+      left: 50%;
+    }
+
+    div:hover {
+      transform: translateZ(100px) rotateX(75deg);
+      box-shadow: 10px 10px 10px #999, -10px -10px 10px #aaa;
+    }
+
+    div:hover img {
+      transform: translateY(-90px) translateZ(250px);
+    }
+  </style>
+</head>
+<body>
+
+  <article>
+    <div>
+      <img src="tea.jpg" alt="Chá">
+    </div>
+  </article>
+
+</body>
+</html>
