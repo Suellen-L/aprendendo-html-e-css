@@ -1,51 +1,82 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>Tea</title>
+  <meta charset="UTF-8"> <!-- Define a codificação de caracteres como UTF-8 -->
+  <title>avatar</title> <!-- Título da página que aparece na aba do navegador -->
+
   <style>
+    /* Estiliza o artigo principal */
     article {
-      display: grid;
-      place-items: center;
-      height: 100vh;
-      perspective: 1000px;
-      transform-style: preserve-3d;
+      display: grid; /* Usa grid para centralizar conteúdo */
+      place-items: center; /* Centraliza vertical e horizontalmente */
+      height: 100vh; /* Altura da viewport inteira */
+      perspective: 1000px; /* Define a perspectiva 3D */
+      transform-style: preserve-3d; /* Mantém o efeito 3D nos elementos filhos */
     }
 
+    /* Estiliza a div que contém a imagem */
     div {
-      background-color: #ddd;
-      border-radius: 2rem;
-      box-shadow: inset 10px 10px 10px #999, inset -10px 10px 10px #fff;
-      width: 280px;
-      aspect-ratio: 1;
-      transition: transform 1s;
-      position: relative;
+      background-color: #ddd; /* Cor de fundo cinza claro */
+      border-radius: 2rem; /* Bordas arredondadas */
+      box-shadow: 
+        inset 10px 10px 10px #999, /* Sombra interna escura */
+        inset -10px 10px 10px #fff; /* Sombra interna clara */
+      width: 280px; /* Largura fixa */
+      aspect-ratio: 1; /* Mantém proporção 1:1 (quadrado) */
+      transition: transform 1s; /* Animação suave para transformações */
+      position: relative; /* Necessário para posicionar a imagem absoluta */
     }
 
+    /* Estiliza a imagem dentro da div */
     img {
-      position: absolute;
-      width: 8%;
-      transform: translate(-50%, -50%);
-      transition: transform 1s;
-      top: 50%;
-      left: 50%;
+      position: relative; /* Permite posicionamento livre dentro da div */
+      width: 50%; /* Largura relativa à div */
+      height: 60%; /* Altura relativa à div */
+      border-radius: 1rem; /* Bordas arredondadas */
+      transform: translate(-50%, -50%); /* Centraliza a imagem */
+      transition: transform 1s; /* Sem animação ao iniciar (será aplicada no hover) */
+      top: 50%; /* Posiciona verticalmente no meio */
+      left: 50%; /* Posiciona horizontalmente no meio */
+      block-size:auto
+      animation: f 2s ease-in-out infinite alternate;
+     
+
     }
 
+    @keyframes flutuar{
+      0%{
+        top: 0;
+      }
+      100%{
+        top: 30px;
+      }
+    }
+
+    /* Efeito ao passar o mouse na div */
     div:hover {
-      transform: translateZ(100px) rotateX(75deg);
-      box-shadow: 10px 10px 10px #999, -10px -10px 10px #aaa;
+      transform: translateZ(100px) rotateX(75deg); /* Rotaciona e empurra para frente */
+      box-shadow: 
+        10px 10px 10px #999, /* Sombra externa escura */
+        -10px -10px 10px #aaa; /* Sombra externa clara */
     }
 
+    /* Efeito na imagem durante o hover */
     div:hover img {
-      transform: translateY(-90px) translateZ(250px);
+      transform: translateX(10px) translateZ(-10px); /* Move a imagem para frente e para cima */
+      top: 50%; /* Posiciona verticalmente no meio */
+      left: 50%; /* Posiciona horizontalmente no meio */
     }
   </style>
 </head>
+
 <body>
 
+  <!-- Container principal que centraliza o conteúdo -->
   <article>
+    <!-- Elemento que recebe o efeito 3D -->
     <div>
-      <img src="tea.jpg" alt="Chá">
+      <!-- Imagem com efeito 3D ao interagir -->
+      <img src="roupa-preta.png" alt="Imagem 3D">
     </div>
   </article>
 

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Canvas - Trocar cor da roupa</title>
+</head>
+<body>
+  <h2>Canvas com máscara precisa</h2>
+  <canvas id="meuCanvas" width="360" height="512"></canvas>
+  <br><br>
+  <button onclick="mudarCorRoupa('red')">Roupa Vermelha</button>
+  <button onclick="mudarCorRoupa('green')">Roupa Verde</button>
+  <button onclick="mudarCorRoupa('blue')">Roupa Azul</button>
+
+  <script>
+    const canvas = document.getElementById('meuCanvas');
+    const ctx = canvas.getContext('2d');
+    const img = new Image();
+    img.src = 'roupa-preta.png'; // certifique-se de que esse arquivo esteja na mesma pasta
+
+    img.onload = function () {
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+    };
+
+    function mudarCorRoupa(cor) {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = cor;
+      ctx.globalAlpha = 0.5;
+
+      // Máscara ajustada para cobrir a roupa
+      ctx.beginPath();
+      ctx.rect(90, 120, 180, 300);
+      ctx.fill();
+
+      ctx.globalAlpha = 1.0;
+    }
+  </script>
+</body>
+</html>
