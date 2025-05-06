@@ -16,11 +16,11 @@
 
     /* Estiliza a div que contém a imagem */
     div {
-      background-color: #ddd; /* Cor de fundo cinza claro */
+      background-color: #32a7d2; /* Cor de fundo cinza claro */
       border-radius: 2rem; /* Bordas arredondadas */
       box-shadow: 
-        inset 10px 10px 10px #999, /* Sombra interna escura */
-        inset -10px 10px 10px #fff; /* Sombra interna clara */
+        inset 10px 10px 10px #2810e1, /* Sombra interna escura */
+        inset -10px 10px 10px #457cf1; /* Sombra interna clara */
       width: 280px; /* Largura fixa */
       aspect-ratio: 1; /* Mantém proporção 1:1 (quadrado) */
       transition: transform 1s; /* Animação suave para transformações */
@@ -38,9 +38,6 @@
       top: 50%; /* Posiciona verticalmente no meio */
       left: 50%; /* Posiciona horizontalmente no meio */
       block-size:auto
-      animation: f 2s ease-in-out infinite alternate;
-     
-
     }
 
     @keyframes flutuar{
@@ -65,6 +62,7 @@
       transform: translateX(10px) translateZ(-10px); /* Move a imagem para frente e para cima */
       top: 50%; /* Posiciona verticalmente no meio */
       left: 50%; /* Posiciona horizontalmente no meio */
+      animation: f 2s ease-in-out infinite alternate;
     }
   </style>
 </head>
