@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatórios de Vendas</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2c3e50, #3498db);
+            padding: 30px;
+            text-align: center;
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .filters {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .filter-group label {
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 0.9rem;
+        }
+
+        select, input {
+            padding: 10px 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            min-width: 150px;
+        }
+
+        select:focus, input:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+        }
+
+        .reports-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .report-section {
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+        }
+
+        .report-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        .report-section h3 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 1.4rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .icon {
+            width: 24px;
+            height: 24px;
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .product-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            border: 2px solid #f1f3f4;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .product-item:hover {
+            border-color: #3498db;
+            background: #f8fafe;
+        }
+
+        .product-image {
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            object-fit: cover;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .product-info {
+            flex: 1;
+        }
+
+        .product-name {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+
+        .product-quantity {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+
+        .rank-badge {
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.8rem;
+            min-width: 50px;
+            text-align: center;
+        }
+
+        .rank-badge.first { background: linear-gradient(135deg, #f1c40f, #f39c12); }
+        .rank-badge.second { background: linear-gradient(135deg, #95a5a6, #7f8c8d); }
+        .rank-badge.third { background: linear-gradient(135deg, #cd7f32, #b8860b); }
+
+        .total-sales {
+            grid-column: 1 / -1;
+            text-align: center;
+            background: linear-gradient(135deg, #27ae60, #229954);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(39, 174, 96, 0.3);
+        }
+
+        .total-sales h3 {
+            color: white;
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+        }
+
+        .total-value {
+            font-size: 3rem;
+            font-weight: bold;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .period-info {
+            margin-top: 10px;
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+
+        .no-data {
+            text-align: center;
+            color: #7f8c8d;
+            font-style: italic;
+            padding: 20px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #3498db;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .reports-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .filters {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .filter-group {
+                width: 100%;
+            }
+            
+            select, input {
+                min-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📊 Relatórios de Vendas</h1>
+            <p>Sistema de análise e controle de vendas administrativo</p>
+        </div>
+
+        <div class="content">
+            <div class="filters">
+                <div class="filter-group">
+                    <label for="period">Período:</label>
+                    <select id="period">
+                        <option value="day">Por Dia</option>
+                        <option value="month">Por Mês</option>
+                        <option value="year" selected>Por Ano</option>
+                    </select>
+                </div>
+
+                <div class="filter-group" id="dayFilter" style="display: none;">
+                    <label for="selectedDate">Data:</label>
+                    <input type="date" id="selectedDate">
+                </div>
+
+                <div class="filter-group" id="monthFilter" style="display: none;">
+                    <label for="selectedMonth">Mês:</label>
+                    <select id="selectedMonth">
+                        <option value="1">Janeiro</option>
+                        <option value="2">Fevereiro</option>
+                        <option value="3">Março</option>
+                        <option value="4">Abril</option>
+                        <option value="5">Maio</option>
+                        <option value="6">Junho</option>
+                        <option value="7">Julho</option>
+                        <option value="8">Agosto</option>
+                        <option value="9">Setembro</option>
+                        <option value="10">Outubro</option>
+                        <option value="11">Novembro</option>
+                        <option value="12">Dezembro</option>
+                    </select>
+                </div>
+
+                <div class="filter-group" id="yearFilter">
+                    <label for="selectedYear">Ano:</label>
+                    <select id="selectedYear">
+                        <option value="2023">2023</option>
+                        <option value="2024" selected>2024</option>
+                        <option value="2025">2025</option>
+                    </select>
+                </div>
+
+                <button class="btn" onclick="generateReport()">Gerar Relatório</button>
+            </div>
+
+            <div id="loading" class="loading" style="display: none;">
+                <div class="spinner"></div>
+                <p>Carregando relatório...</p>
+            </div>
+
+            <div id="reportContent" class="reports-grid">
+                <div class="report-section">
+                    <h3><span class="icon">🏆</span> Top 3 - Mais Vendidos</h3>
+                    <div id="topSelling"></div>
+                </div>
+
+                <div class="report-section">
+                    <h3><span class="icon">📉</span> Top 3 - Menos Vendidos</h3>
+                    <div id="leastSelling"></div>
+                </div>
+
+                <div class="report-section total-sales">
+                    <h3>💰 Total de Vendas</h3>
+                    <div class="total-value" id="totalSales">R$ 0,00</div>
+                    <div class="period-info" id="periodInfo">Selecione um período</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Dados simulados de vendas
+        const salesData = {
+            2024: {
+                1: { // Janeiro
+                    products: [
+                        { id: 1, name: 'Smartphone Galaxy S24', image: 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=150&h=150&fit=crop', quantity: 45, price: 2800.00 },
+                        { id: 2, name: 'Notebook Dell XPS', image: 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=150&h=150&fit=crop', quantity: 23, price: 4200.00 },
+                        { id: 3, name: 'Mouse Gamer RGB', image: 'https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=150&h=150&fit=crop', quantity: 78, price: 150.00 },
+                        { id: 4, name: 'Teclado Mecânico', image: 'https://images.unsplash.com/photo-1541140532154-b024d705b90a?w=150&h=150&fit=crop', quantity: 34, price: 280.00 },
+                        { id: 5, name: 'Headset Bluetooth', image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=150&h=150&fit=crop', quantity: 12, price: 320.00 }
+                    ]
+                },
+                9: { // Setembro (mês atual)
+                    products: [
+                        { id: 1, name: 'iPhone 15 Pro', image: 'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=150&h=150&fit=crop', quantity: 67, price: 5200.00 },
+                        { id: 2, name: 'MacBook Air M3', image: 'https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w=150&h=150&fit=crop', quantity: 28, price: 6800.00 },
+                        { id: 3, name: 'Monitor 4K Samsung', image: 'https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=150&h=150&fit=crop', quantity: 15, price: 1800.00 },
+                        { id: 4, name: 'Caixa de Som JBL', image: 'https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=150&h=150&fit=crop', quantity: 43, price: 450.00 },
+                        { id: 5, name: 'Webcam Logitech', image: 'https://images.unsplash.com/photo-1587825140708-dfaf72ae4b04?w=150&h=150&fit=crop', quantity: 8, price: 380.00 }
+                    ]
+                }
+            },
+            2023: {
+                12: {
+                    products: [
+                        { id: 1, name: 'PlayStation 5', image: 'https://images.unsplash.com/photo-1606813907291-d86efa9b94db?w=150&h=150&fit=crop', quantity: 89, price: 3500.00 },
+                        { id: 2, name: 'Smart TV 55"', image: 'https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?w=150&h=150&fit=crop', quantity: 34, price: 2200.00 },
+                        { id: 3, name: 'Tablet iPad Air', image: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=150&h=150&fit=crop', quantity: 56, price: 3200.00 },
+                        { id: 4, name: 'Smartwatch Apple', image: 'https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=150&h=150&fit=crop', quantity: 21, price: 1800.00 },
+                        { id: 5, name: 'Câmera DSLR Canon', image: 'https://images.unsplash.com/photo-1502920917128-1aa500764cbd?w=150&h=150&fit=crop', quantity: 7, price: 4500.00 }
+                    ]
+                }
+            }
+        };
+
+        // Configuração inicial
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date();
+            document.getElementById('selectedDate').value = today.toISOString().split('T')[0];
+            document.getElementById('selectedMonth').value = today.getMonth() + 1;
+            document.getElementById('selectedYear').value = today.getFullYear();
+            
+            // Gerar relatório inicial
+            generateReport();
+        });
+
+        // Controle de filtros
+        document.getElementById('period').addEventListener('change', function() {
+            const period = this.value;
+            
+            document.getElementById('dayFilter').style.display = period === 'day' ? 'flex' : 'none';
+            document.getElementById('monthFilter').style.display = period === 'month' ? 'flex' : 'none';
+            document.getElementById('yearFilter').style.display = period === 'year' ? 'flex' : 'block';
+        });
+
+        function generateReport() {
+            const loading = document.getElementById('loading');
+            const content = document.getElementById('reportContent');
+            
+            // Mostrar loading
+            loading.style.display = 'block';
+            content.style.opacity = '0.5';
+            
+            setTimeout(() => {
+                const period = document.getElementById('period').value;
+                const year = document.getElementById('selectedYear').value;
+                const month = document.getElementById('selectedMonth').value;
+                const date = document.getElementById('selectedDate').value;
+                
+                let data = [];
+                let periodText = '';
+                
+                if (period === 'day') {
+                    const selectedDate = new Date(date);
+                    periodText = selectedDate.toLocaleDateString('pt-BR', { 
+                        weekday: 'long', 
+                        year: 'numeric', 
+                        month: 'long', 
+                        day: 'numeric' 
+                    });
+                    // Para demo, usar dados do mês correspondente
+                    const monthData = salesData[selectedDate.getFullYear()]?.[selectedDate.getMonth() + 1];
+                    if (monthData) {
+                        data = monthData.products.map(p => ({...p, quantity: Math.floor(p.quantity / 30)}));
+                    }
+                } else if (period === 'month') {
+                    const monthNames = ['', 'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 
+                                     'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+                    periodText = `${monthNames[month]} de ${year}`;
+                    const monthData = salesData[year]?.[month];
+                    if (monthData) {
+                        data = monthData.products;
+                    }
+                } else if (period === 'year') {
+                    periodText = `Ano de ${year}`;
+                    const yearData = salesData[year];
+                    if (yearData) {
+                        const allProducts = {};
+                        Object.values(yearData).forEach(monthData => {
+                            monthData.products.forEach(product => {
+                                if (allProducts[product.id]) {
+                                    allProducts[product.id].quantity += product.quantity;
+                                } else {
+                                    allProducts[product.id] = {...product};
+                                }
+                            });
+                        });
+                        data = Object.values(allProducts);
+                    }
+                }
+                
+                displayReport(data, periodText, period);
+                
+                // Esconder loading
+                loading.style.display = 'none';
+                content.style.opacity = '1';
+            }, 1000);
+        }
+
+        function displayReport(data, periodText, period) {
+            if (!data || data.length === 0) {
+                document.getElementById('topSelling').innerHTML = '<div class="no-data">Nenhum dado encontrado para este período</div>';
+                document.getElementById('leastSelling').innerHTML = '<div class="no-data">Nenhum dado encontrado para este período</div>';
+                document.getElementById('totalSales').textContent = 'R$ 0,00';
+                document.getElementById('periodInfo').textContent = periodText;
+                return;
+            }
+
+            // Ordenar produtos
+            const sortedByQuantity = [...data].sort((a, b) => b.quantity - a.quantity);
+            const topSelling = sortedByQuantity.slice(0, 3);
+            const leastSelling = sortedByQuantity.slice(-3).reverse();
+
+            // Exibir top 3 mais vendidos
+            displayProductList('topSelling', topSelling, true);
+            
+            // Exibir top 3 menos vendidos
+            displayProductList('leastSelling', leastSelling, false);
+
+            // Calcular e exibir total
+            const totalValue = data.reduce((sum, product) => sum + (product.quantity * product.price), 0);
+            document.getElementById('totalSales').textContent = formatCurrency(totalValue);
+            document.getElementById('periodInfo').textContent = periodText;
+        }
+
+        function displayProductList(containerId, products, isTopSelling) {
+            const container = document.getElementById(containerId);
+            
+            if (products.length === 0) {
+                container.innerHTML = '<div class="no-data">Nenhum produto encontrado</div>';
+                return;
+            }
+
+            const badges = isTopSelling ? ['first', 'second', 'third'] : ['third', 'second', 'first'];
+            const positions = isTopSelling ? ['1º', '2º', '3º'] : ['3º', '2º', '1º'];
+
+            container.innerHTML = products.map((product, index) => `
+                <div class="product-item">
+                    <img src="${product.image}" alt="${product.name}" class="product-image" 
+                         onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjYwIiBoZWlnaHQ9IjYwIiBmaWxsPSIjRjNGNEY2Ii8+CjxwYXRoIGQ9Ik0yMCAyMEg0MFY0MEgyMFYyMFoiIGZpbGw9IiNEMUQ1REIiLz4KPHR5cGU+UHJvZHV0bzwvdGV4dD4KPC9zdmc+'">
+                    <div class="product-info">
+                        <div class="product-name">${product.name}</div>
+                        <div class="product-quantity">Vendidos: ${product.quantity} unidades</div>
+                    </div>
+                    <div class="rank-badge ${badges[index]}">${positions[index]}</div>
+                </div>
+            `).join('');
+        }
+
+        function formatCurrency(value) {
+            return new Intl.NumberFormat('pt-BR', {
+                style: 'currency',
+                currency: 'BRL'
+            }).format(value);
+        }
+    </script>
+</body>
+</html>
